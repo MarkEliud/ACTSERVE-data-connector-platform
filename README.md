@@ -9,13 +9,13 @@ The Data Connector Platform is a comprehensive solution for extracting, transfor
 
 ## Features
 
-- 🔌 **Multi-Database Support**: PostgreSQL, MySQL, MongoDB, ClickHouse
-- 📊 **Batch Extraction**: Configurable batch sizes with real-time progress
-- ✏️ **Editable Data Grid**: Inline editing with validation
-- 💾 **Dual Storage**: Database storage + JSON/CSV export
-- 🔐 **Secure Authentication**: JWT with role-based access
-- 📈 **Dashboard Analytics**: Visual insights and statistics
-- 🌐 **Responsive Design**: Works on desktop and mobile
+- **Multi-Database Support**: PostgreSQL, MySQL, MongoDB, ClickHouse
+- **Batch Extraction**: Configurable batch sizes with real-time progress
+- **Editable Data Grid**: Inline editing with validation
+- **Dual Storage**: Database storage + JSON/CSV export
+- **Secure Authentication**: JWT with role-based access
+- **Dashboard Analytics**: Visual insights and statistics
+- **Responsive Design**: Works on desktop and mobile
 
 ## Quick Start
 
