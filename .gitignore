@@ -1,0 +1,59 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.so
+.Python
+env/
+venv/
+ENV/
+.env
+*.log
+
+# Test files
+**/tests/
+**/tests.py
+**/test_*.py
+*_test.py
+pytest.ini
+test.sh*
+test2.sh
+scripts/run_tests.sh
+tests/
+
+# Django
+*.log
+*.pot
+*.pyc
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+/media
+/staticfiles
+
+# Frontend
+node_modules/
+.next/
+out/
+build/
+dist/
+.env.local
+.env.production
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Secrets
+*.pem
+*.key
+credentials/
+secrets/
+
+# Docker
+*.pid
+docker-compose.override.yml

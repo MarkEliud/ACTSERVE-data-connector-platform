@@ -1,0 +1,20 @@
+-r base.txt
+
+# Production Server
+gunicorn==21.2.0
+uvicorn==0.27.0
+
+# Security
+django-csp==3.7
+django-defender==0.9.8
+
+# Performance
+django-compressor==4.4
+whitenoise==6.6.0
+
+# Monitoring
+sentry-sdk==1.39.2
+django-prometheus==2.3.1
+
+# Database Pooling
+pgbouncer-statu==1.0.0

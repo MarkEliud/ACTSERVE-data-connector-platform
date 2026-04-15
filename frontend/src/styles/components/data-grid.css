@@ -1,0 +1,94 @@
+/* frontend/src/styles/components/data-grid.css */
+.data-grid-container {
+  overflow-x: auto;
+  border-radius: 0.5rem;
+  background: white;
+}
+
+.data-grid-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.data-grid-table thead th {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+  padding: 0.75rem;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.data-grid-table tbody td {
+  padding: 0.5rem;
+  border-bottom: 1px solid #dee2e6;
+  vertical-align: middle;
+}
+
+.data-grid-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.data-grid-table tbody tr.row-modified {
+  background-color: #fff3cd;
+}
+
+.data-grid-table tbody tr.row-invalid {
+  background-color: #f8d7da;
+}
+
+.data-grid-cell-editing {
+  background-color: #e7f1ff;
+  box-shadow: inset 0 0 0 1px #0d6efd;
+}
+
+.data-grid-cell-editing input,
+.data-grid-cell-editing textarea {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 0.25rem;
+  outline: none;
+}
+
+.data-grid-cell-error {
+  border-left: 3px solid #dc3545;
+}
+
+.data-grid-cell-modified {
+  border-left: 3px solid #ffc107;
+}
+
+/* Column resize handles */
+.data-grid-column-resize {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 5px;
+  height: 100%;
+  cursor: col-resize;
+  user-select: none;
+}
+
+.data-grid-column-resize:hover {
+  background-color: #0d6efd;
+}
+
+/* Frozen columns */
+.data-grid-frozen-left {
+  position: sticky;
+  left: 0;
+  background-color: white;
+  z-index: 5;
+  box-shadow: 2px 0 5px -2px rgba(0, 0, 0, 0.1);
+}
+
+.data-grid-frozen-right {
+  position: sticky;
+  right: 0;
+  background-color: white;
+  z-index: 5;
+  box-shadow: -2px 0 5px -2px rgba(0, 0, 0, 0.1);
+}

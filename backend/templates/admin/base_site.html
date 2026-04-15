@@ -1,0 +1,154 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}ACTSERV Data Connector | Admin{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">
+        <img src="{% static 'admin/img/actserv-logo.svg' %}" alt="ACTSERV" height="40" style="vertical-align: middle;">
+        <span style="color: #46b754; margin-left: 10px;">Data Connector Platform</span>
+    </a>
+</h1>
+{% endblock %}
+
+{% block extrastyle %}
+<style>
+    :root {
+        --primary: #46b754;
+        --secondary: #f89734;
+        --accent: #223843;
+        --primary-fg: #fff;
+        --body-fg: #223843;
+        --body-bg: #F7FAFC;
+        --body-quiet-color: #6c8a96;
+        --body-loud-color: #223843;
+        --header-color: #fff;
+        --header-branding-color: #fff;
+        --header-bg: #223843;
+        --header-link-color: #fff;
+        --link-fg: #46b754;
+        --link-hover-color: #f89734;
+        --link-selected-fg: #f89734;
+        --button-bg: #46b754;
+        --button-hover-bg: #3a9e47;
+        --default-button-bg: #f89734;
+        --default-button-hover-bg: #e08820;
+        --close-button-bg: #dc2626;
+        --close-button-hover-bg: #b91c1c;
+        --delete-button-bg: #dc2626;
+        --delete-button-hover-bg: #b91c1c;
+        --object-tools-fg: #46b754;
+        --object-tools-hover-bg: #46b754;
+        --border-color: #e5ecef;
+        --border-radius: 8px;
+    }
+    
+    /* Module headers */
+    .module h2, .module caption, .inline-group h2 {
+        background: #244a4a;
+        color: #fff;
+    }
+    
+    /* Buttons */
+    .button, input[type=submit], input[type=button], .submit-row input, a.button {
+        background: var(--button-bg);
+        border-radius: 6px;
+        font-weight: 500;
+    }
+    
+    .button.default, input[type=submit].default, .submit-row input.default {
+        background: var(--default-button-bg);
+    }
+    
+    .button:hover, input[type=submit]:hover, input[type=button]:hover {
+        background: var(--button-hover-bg);
+    }
+    
+    /* Tables */
+    #changelist table thead th {
+        background: #edf7f5;
+        color: #223843;
+        font-weight: 600;
+    }
+    
+    /* Dashboard modules */
+    .dashboard .module table th {
+        background: #edf7f5;
+        color: #223843;
+    }
+    
+    /* Breadcrumbs */
+    div.breadcrumbs {
+        background: #244a4a;
+        color: #fff;
+    }
+    
+    div.breadcrumbs a {
+        color: #46b754;
+    }
+    
+    /* Messages */
+    .messagelist .success {
+        background: #46b75420;
+        border-left-color: #46b754;
+        color: #223843;
+    }
+    
+    .messagelist .error {
+        background: #dc262620;
+        border-left-color: #dc2626;
+    }
+    
+    /* Login page */
+    .login .container {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+    
+    .login .submit-row {
+        background: transparent;
+        border: none;
+    }
+    
+    /* Sidebar navigation */
+    #nav-sidebar .current-model {
+        background: #46b75420;
+        border-left-color: #46b754;
+    }
+    
+    /* Tabs */
+    .tablist li a {
+        background: #edf7f5;
+        color: #223843;
+    }
+    
+    .tablist li a:hover {
+        background: #46b754;
+        color: #fff;
+    }
+    
+    /* Calendar widget */
+    .calendar td.selected a {
+        background: #46b754;
+    }
+    
+    /* Filter sidebar */
+    #changelist-filter a:focus, #changelist-filter a:hover {
+        color: #f89734;
+    }
+    
+    /* Help text */
+    .help, p.help {
+        color: #6c8a96;
+    }
+    
+    /* Card-like modules */
+    .module {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+</style>
+{% endblock %}

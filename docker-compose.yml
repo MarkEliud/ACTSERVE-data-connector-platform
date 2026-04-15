@@ -1,0 +1,239 @@
+services:
+  # PostgreSQL - Main application database
+  postgres:
+    image: postgres:15-alpine
+    container_name: connector_postgres
+    environment:
+      POSTGRES_DB: ${DB_NAME:-connector_db}
+      POSTGRES_USER: ${DB_USER:-agriconnect_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-AgriConnect2024}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-agriconnect_user} -d ${DB_NAME:-connector_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - connector_network
+    restart: unless-stopped
+
+  # MySQL - Source database for extraction
+  mysql:
+    image: mysql:8.0
+    container_name: connector_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpass}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-data_connector}
+      MYSQL_USER: ${MYSQL_USER:-appuser}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-apppass}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_ROOT_PASSWORD:-rootpass}"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+    networks:
+      - connector_network
+    restart: unless-stopped
+
+  # MongoDB - Source database for extraction
+  mongodb:
+    image: mongo:7
+    container_name: connector_mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-root}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-rootpass}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE:-test_db}
+    volumes:
+      - mongodb_data:/data/db
+      - ./docker/mongodb/init.js:/docker-entrypoint-initdb.d/init.js
+    ports:
+      - "27017:27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')", "--quiet"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+    networks:
+      - connector_network
+    restart: unless-stopped
+
+  # ClickHouse - Source database for extraction
+  clickhouse:
+    image: clickhouse/clickhouse-server:23.8
+    container_name: connector_clickhouse
+    environment:
+      CLICKHOUSE_DB: ${CLICKHOUSE_DB:-default}
+      CLICKHOUSE_USER: ${CLICKHOUSE_USER:-default}
+      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD:-}
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+      - ./docker/clickhouse/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    healthcheck:
+      test: ["CMD", "clickhouse-client", "--query", "SELECT 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+    networks:
+      - connector_network
+    restart: unless-stopped
+
+  # Redis - Cache and message broker
+  redis:
+    image: redis:7-alpine
+    container_name: connector_redis
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - connector_network
+    restart: unless-stopped
+
+  # Backend - Django Application
+  backend:
+    build: ./backend
+    container_name: connector_backend
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend:/app
+      - storage_data:/app/media
+      - static_data:/app/staticfiles
+    ports:
+      - "8000:8000"
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings_development
+      DJANGO_ENV: development
+      DJANGO_DEBUG: ${DJANGO_DEBUG:-true}
+      # PostgreSQL
+      DB_NAME: ${DB_NAME:-connector_db}
+      DB_USER: ${DB_USER:-agriconnect_user}
+      DB_PASSWORD: ${DB_PASSWORD:-AgriConnect2024}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      # Redis
+      REDIS_URL: redis://redis:6379/0
+      REDIS_CACHE_URL: redis://redis:6379/1
+      # MySQL connection for extraction
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_USER: ${MYSQL_USER:-root}
+      MYSQL_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpass}
+      # MongoDB connection for extraction
+      MONGO_HOST: mongodb
+      MONGO_PORT: 27017
+      MONGO_USER: ${MONGO_USER:-root}
+      MONGO_PASSWORD: ${MONGO_PASSWORD:-rootpass}
+      # ClickHouse connection for extraction
+      CLICKHOUSE_HOST: clickhouse
+      CLICKHOUSE_PORT: 9000
+      CLICKHOUSE_USER: ${CLICKHOUSE_USER:-default}
+      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD:-}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - connector_network
+    restart: unless-stopped
+
+  # Celery Worker - Async tasks
+  celery:
+    build: ./backend
+    container_name: connector_celery
+    command: celery -A config worker -l info --without-gossip --without-mingle --without-heartbeat
+    volumes:
+      - ./backend:/app
+      - storage_data:/app/media
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings_development
+      DB_NAME: ${DB_NAME:-connector_db}
+      DB_USER: ${DB_USER:-agriconnect_user}
+      DB_PASSWORD: ${DB_PASSWORD:-AgriConnect2024}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      REDIS_URL: redis://redis:6379/0
+    depends_on:
+      - redis
+      - postgres
+      - backend
+    networks:
+      - connector_network
+    restart: unless-stopped
+
+  # Celery Beat - Scheduled tasks
+  celery-beat:
+    build: ./backend
+    container_name: connector_celery_beat
+    command: celery -A config beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes:
+      - ./backend:/app
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings_development
+      REDIS_URL: redis://redis:6379/0
+    depends_on:
+      - redis
+      - celery
+    networks:
+      - connector_network
+    restart: unless-stopped
+
+  # Frontend - Next.js Application
+  frontend:
+    build: ./frontend
+    container_name: connector_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000/api}
+    depends_on:
+      - backend
+    networks:
+      - connector_network
+    restart: unless-stopped
+
+# Volumes for persistent data
+volumes:
+  postgres_data:
+    driver: local
+  mysql_data:
+    driver: local
+  mongodb_data:
+    driver: local
+  clickhouse_data:
+    driver: local
+  redis_data:
+    driver: local
+  storage_data:
+    driver: local
+  static_data:
+    driver: local
+
+# Networks
+networks:
+  connector_network:
+    driver: bridge

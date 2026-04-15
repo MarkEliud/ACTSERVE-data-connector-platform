@@ -1,0 +1,176 @@
+/* ACTSERV Brand Colors for Django Admin */
+:root {
+    --actserv-green: #46b754;
+    --actserv-orange: #f89734;
+    --actserv-navy: #223843;
+    --actserv-teal: #244a4a;
+    --actserv-light-teal: #edf7f5;
+    --actserv-light-gray: #F7FAFC;
+}
+
+/* Header */
+#header {
+    background: var(--actserv-navy);
+    color: white;
+}
+
+#branding h1, #branding h1 a:link, #branding h1 a:visited {
+    color: white;
+}
+
+#user-tools a {
+    color: var(--actserv-green);
+    border-bottom-color: var(--actserv-green);
+}
+
+#user-tools a:hover {
+    color: var(--actserv-orange);
+}
+
+/* Primary Button */
+.button, input[type=submit], input[type=button], .submit-row input, a.button {
+    background: var(--actserv-green);
+}
+
+.button:hover, input[type=submit]:hover, input[type=button]:hover {
+    background: #3a9e47;
+}
+
+.button.default, input[type=submit].default, .submit-row input.default {
+    background: var(--actserv-orange);
+}
+
+.button.default:hover, input[type=submit].default:hover {
+    background: #e08820;
+}
+
+/* Links */
+a:link, a:visited {
+    color: var(--actserv-green);
+}
+
+a:hover {
+    color: var(--actserv-orange);
+}
+
+/* Module Headers */
+.module h2, .module caption, .inline-group h2 {
+    background: var(--actserv-teal);
+    color: white;
+}
+
+/* Dashboard Modules */
+.dashboard .module table th {
+    background: var(--actserv-light-teal);
+    color: var(--actserv-navy);
+}
+
+/* Breadcrumbs */
+div.breadcrumbs {
+    background: var(--actserv-teal);
+    color: white;
+}
+
+div.breadcrumbs a {
+    color: var(--actserv-green);
+}
+
+/* Sidebar */
+#nav-sidebar .current-model {
+    background: var(--actserv-green);
+    color: white;
+}
+
+/* Success Messages */
+.success, .messagelist .success {
+    background: var(--actserv-green);
+    color: white;
+}
+
+/* Error Messages */
+.errornote, .error, .messagelist .error {
+    background: #dc2626;
+    color: white;
+}
+
+/* Table Headers */
+#changelist table thead th {
+    background: var(--actserv-light-teal);
+    color: var(--actserv-navy);
+    font-weight: 600;
+}
+
+/* Pagination */
+.paginator a:link, .paginator a:visited {
+    color: var(--actserv-green);
+}
+
+.paginator a:hover {
+    color: var(--actserv-orange);
+}
+
+/* Action Buttons */
+.object-tools a:link, .object-tools a:visited {
+    background: var(--actserv-green);
+    color: white;
+}
+
+.object-tools a:hover {
+    background: var(--actserv-orange);
+}
+
+/* Filter Sidebar */
+#changelist-filter a:focus, #changelist-filter a:hover {
+    color: var(--actserv-orange);
+}
+
+/* Calendar Widget */
+.calendar td.selected a {
+    background: var(--actserv-green);
+}
+
+/* Tabs */
+.tablist li a {
+    background: var(--actserv-light-teal);
+    color: var(--actserv-navy);
+}
+
+.tablist li a:hover {
+    background: var(--actserv-green);
+    color: white;
+}
+
+/* Login Page */
+.login .container {
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+}
+
+.login .submit-row {
+    background: transparent;
+    border: none;
+}
+
+/* Cards / Modules */
+.module {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* Help Text */
+.help, p.help {
+    color: #6c8a96;
+}
+
+/* Required Field Indicator */
+.required label, label.required {
+    color: var(--actserv-navy);
+    font-weight: 600;
+}
+
+.required label:after, label.required:after {
+    content: '*';
+    color: #dc2626;
+    margin-left: 4px;
+}

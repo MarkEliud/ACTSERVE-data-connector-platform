@@ -1,0 +1,36 @@
+# Core Django Framework
+Django==4.2.11
+djangorestframework==3.14.0
+djangorestframework-simplejwt==5.3.1
+
+# Database Drivers
+psycopg2-binary==2.9.9
+pymysql==1.1.0
+pymongo==4.6.1
+clickhouse-connect==0.6.22
+
+# Caching & Async
+redis==5.0.1
+django-redis==5.4.0
+celery==5.3.4
+django-celery-beat==2.5.0
+
+# API & Documentation
+django-cors-headers==4.3.1
+django-filter==23.5
+drf-yasg==1.21.7
+coreapi==2.3.3
+pyyaml==6.0.1
+
+# File Handling
+python-dotenv==1.0.0
+Pillow==10.2.0
+django-storages==1.14.2
+
+# Utilities
+python-dateutil==2.8.2
+requests==2.31.0
+cryptography==42.0.2
+
+# Monitoring & Logging
+django-structlog==7.0.0

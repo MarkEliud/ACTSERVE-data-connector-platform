@@ -1,0 +1,3 @@
+row_number,is_modified,is_valid,description,id,key,updated_at,value
+0,False,True,Available product units,1,product_units,2025-11-12T06:36:30.220111,"kg,g,lb,piece,bunch,pack,dozen,liter,ml,approved1"
+1,False,True,Available product categories,2,product_categories,2025-11-12T07:52:36.371393,"Vegetables,Fruits,Grains,Dairy,Poultry,Livestock,Herbs,Spices,Tubers,Legumes,new,test,other"
