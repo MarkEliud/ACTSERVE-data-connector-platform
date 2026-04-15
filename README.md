@@ -29,5 +29,5 @@ The Data Connector Platform is a comprehensive solution for extracting, transfor
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourorg/data-connector.git
+git clone https://github.com/markeliud/ACTSERVE-data-connector-platform.git
 cd data-connector
